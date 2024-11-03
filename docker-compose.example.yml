@@ -36,7 +36,9 @@ services:
     volumes:
       - mongo_data:/data/db  # Volumen persistente para almacenar datos
     environment:
-      - MONGO_INITDB_DATABASE=bowling  # Nombre de la base de datos inicial
+      - MONGO_INITDB_DATABASE=bowling
+      - MONGO_INITDB_ROOT_USERNAME=
+      - MONGO_INITDB_ROOT_PASSWORD=
     networks:
       - app-network
 

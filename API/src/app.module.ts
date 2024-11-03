@@ -13,7 +13,7 @@ import { UsersModule } from './users/users.module';
         AuthModule, 
         ConfigModule.forRoot({ isGlobal: true }),
         GamesModule,
-        MongooseModule.forRoot(process.env.MONGODB_URI),
+        MongooseModule.forRoot(`mongodb://${ process.env.MONGO_INITDB_ROOT_USERNAME }:${ process.env.MONGO_INITDB_ROOT_PASSWORD }@mongo:27017/bowling`),
         PlayersModule,
         TournamentsModule,
         UsersModule,
