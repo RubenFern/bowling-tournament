@@ -1,0 +1,61 @@
+<div class="w-full">
+    <div class="flex justify-end p-2">
+        <button mat-fab extended (click)="logout()" color="accent">
+            <mat-icon>logout</mat-icon>
+            Cerrar sesión
+        </button>
+    </div>
+
+    @if (isLoading) {
+        <div class="flex justify-center">
+            <mat-spinner></mat-spinner>
+        </div>
+    } @else {
+        <div class="lg:w-1/2 m-auto p-5">
+            <div class="flex justify-between pb-4">
+                <h1 class="text-white">Torneos</h1>
+                <button mat-fab extended (click)="add()" color="accent">
+                    <mat-icon>add</mat-icon>
+                    Añadir torneo
+                </button>
+            </div>
+
+            @for (tournament of tournaments; track $index) {
+                <mat-card class="mb-2" appearance="raised">
+                    <mat-card-header>
+                        <a class="hover:underline" [routerLink]="['/tournaments', tournament._id]">
+                            <mat-card-title>{{ tournament.name | titlecase }} </mat-card-title>
+                        </a>
+                    </mat-card-header>
+
+                    <mat-card-actions class="flex justify-center sm:justify-end">
+                        <button
+                            class="mr-2"
+                            mat-fab
+                            color="primary"
+                            matTooltip="Editar"
+                            (click)="edit(tournament)"
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button
+                            mat-fab
+                            color="primary"
+                            matTooltip="Borrar"
+                            (click)="delete(tournament)"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+            }
+        </div>
+
+        @if (tournaments.length == 0) {
+            <div class="p-5 bg-white w-1/2 m-auto rounded-2xl">
+                <h1 class="text-center">No existen torneos para mostrar</h1>
+            </div>
+        }
+    }
+
+</div>

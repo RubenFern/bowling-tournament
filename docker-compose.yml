@@ -1,0 +1,48 @@
+services:
+  # Servicio para la API de NestJS
+  api:
+    container_name: api
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"  # Mapea el puerto 3000 del contenedor al puerto 3000 del host
+    env_file:
+      - ./API/.env
+    networks:
+      - app-network
+
+  # Servicio para la aplicación Angular
+  webapp:
+    container_name: webapp
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"  # Mapea el puerto 80 del contenedor al puerto 4200 del host
+    environment:
+      - API_URL=http://api:3000  # Define la URL de la API para la aplicación Angular
+    depends_on:
+      - api  # La aplicación Angular depende de la API
+    networks:
+      - app-network
+
+  # Servicio para la base de datos MongoDB
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"  # Mapea el puerto 27017 del contenedor al puerto 27017 del host
+    volumes:
+      - mongo_data:/data/db  # Volumen persistente para almacenar datos
+    environment:
+      - MONGO_INITDB_DATABASE=bowling  # Nombre de la base de datos inicial
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
