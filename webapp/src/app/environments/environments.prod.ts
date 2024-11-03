@@ -1,3 +1,3 @@
 export const environment = {
-    apiUrl: 'http://localhost:3000/api',
+    apiUrl: 'http://vps-05ddb787.vps.ovh.net:3000:3000/api',
 };
