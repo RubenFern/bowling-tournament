@@ -112,9 +112,6 @@ export class DetailComponent implements OnInit {
             .getAll(this.tournamentId)
             .pipe(
                 switchMap((games) => {
-                    if (games.length === 0)
-                        return of();
-
                     this.isLoading = true;
                     this.gameElements = games;
                     const playerObservables = games.map((game, index) =>
@@ -208,6 +205,9 @@ export class DetailComponent implements OnInit {
             num++;
         }
 
+        if (num === 0)
+            return 0;
+
         return Math.round(total / num);
     }
 
@@ -219,7 +219,7 @@ export class DetailComponent implements OnInit {
             componentInstance.save().subscribe(res => {
                 if (!res) return;
 
-                this.ngOnInit();
+                this.loadGames();
                 this.showAlert('Partida añadida correctamente');
             });
         });
@@ -240,24 +240,26 @@ export class DetailComponent implements OnInit {
         dialogRef.afterClosed().subscribe(res => {
             if (!res) return;
 
-            this.ngOnInit();
+            this.loadGames();
             this.showAlert('Partida editada correctamente');
         });
     }
 
-    delete(player: string): void {
+    delete(playerId: string): void {
         const warning: string = '¿Estás seguro de querer borrar la partida?';
         const dialogRef = this.dialog.open(ConfirmDialog, { data: warning });
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.gameApiService.delete({
-                    player_id: player,
-                    tournament_id: this.tournamentId
-                }).subscribe(() => {
-                    this.ngOnInit();
-                    this.showAlert('Partida eliminada correctamente');
-                });
+                this.gameApiService
+                    .delete({
+                        player_id: playerId,
+                        tournament_id: this.tournamentId
+                    })
+                    .subscribe(() => {
+                        this.loadGames();
+                        this.showAlert('Partida eliminada correctamente');
+                    });
             }
         });
     }

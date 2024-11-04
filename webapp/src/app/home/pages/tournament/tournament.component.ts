@@ -61,12 +61,8 @@ export class TournamentComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.tournamentApiService
-                    .getAll()
-                    .subscribe((data) => {
-                        this.tournaments = data;
-                        this.showAlert('Torneo añadido correctamente');
-                    });
+                this.loadTournaments();
+                this.showAlert('Torneo añadido correctamente');
             }
         });
     }
@@ -76,12 +72,8 @@ export class TournamentComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.tournamentApiService
-                    .getAll()
-                    .subscribe((data) => {
-                        this.tournaments = data;
-                        this.showAlert('Torneo actualizado correctamente');
-                    });
+                this.loadTournaments();
+                this.showAlert('Torneo actualizado correctamente');
             }
         });
     }
@@ -95,7 +87,7 @@ export class TournamentComponent implements OnInit {
                 this.tournamentApiService
                     .delete(tournament.name)
                     .subscribe(() => {
-                        this.ngOnInit();
+                        this.loadTournaments();
                         this.showAlert('Torneo eliminado correctamente');
                     });
             }
