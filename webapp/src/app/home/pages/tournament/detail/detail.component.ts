@@ -108,11 +108,18 @@ export class DetailComponent implements OnInit {
     }
 
     loadGames(): void {
+        this.isLoading = true;
         this.gameApiService
             .getAll(this.tournamentId)
             .pipe(
                 switchMap((games) => {
-                    this.isLoading = true;
+                    if (games.length === 0) {
+                        this.gameElements = [];
+                        this.dataSource = [];
+                        this.isLoading = false;
+                        return of();
+                    }
+
                     this.gameElements = games;
                     const playerObservables = games.map((game, index) =>
                         this.playerApiService.get(game.player_id).pipe(
