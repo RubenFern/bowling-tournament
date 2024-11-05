@@ -1,6 +1,6 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
@@ -8,7 +8,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MaterialModules } from '@material';
 import { forkJoin, of, switchMap } from 'rxjs';
 
-import { Game } from 'app/home/interfaces/game.interfaces';
+import { Game, UpdateGameDto } from 'app/home/interfaces/game.interfaces';
 import { PlayerApiService } from 'app/home/services/player.service';
 import { GameApiService } from '../../../services/game.service';
 import { UpdateGameComponent } from '../../modals/game/update.component';
@@ -16,7 +16,6 @@ import { AddGameComponent } from '../../modals/game/add.component';
 import { ConfirmDialog } from '../../modals/alerts/confirm.component';
 import { AlertMessageComponent } from '../../modals/alerts/message.component';
 import { TournamentApiService } from 'app/home/services/tournament.service';
-import { Player } from 'app/home/interfaces/player.interfaces';
 
 export interface GameElement {
     position: number;
@@ -39,6 +38,7 @@ export interface GameElement {
     imports: [
         ...MaterialModules,
         CommonModule,
+        FormsModule,
         MatTableModule,
         ReactiveFormsModule,
         RouterModule,
@@ -230,6 +230,27 @@ export class DetailComponent implements OnInit {
                 this.showAlert('Partida añadida correctamente');
             });
         });
+    }
+
+    editCeld(field: string, value: string, playerId: string): void {
+        const data: any = this.gameElements.find((element) => element.player_id === playerId) || undefined;
+
+        if (!data)
+            return;
+
+        const updateDto: any = {
+            filter: {
+                player_id: playerId,
+                tournament_id: data.tournament_id,
+            },
+            [field]: value
+        }
+
+        this.gameApiService
+            .update(updateDto)
+            .subscribe(() => {
+                this.showAlert('Valor editado');
+            });
     }
 
     edit(game: GameElement): void {

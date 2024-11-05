@@ -30,49 +30,99 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.name }}
+                    </td>
                 </ng-container>
 
                 <!-- Handicap Column -->
                 <ng-container matColumnDef="handicap">
                     <th mat-header-cell *matHeaderCellDef> Handicap </th>
-                    <td mat-cell *matCellDef="let element"> {{element.handicap}} </td>
+                    <td mat-cell *matCellDef="let element">
+                        <input
+                            class="w-14 hover:outline outline-offset-2 outline-1 rounded-sm"
+                            matInput [(ngModel)]="element.handicap"
+                            (focusout)="editCeld('handicap', element.handicap, element.player_id)"
+                        />
+                    </td>
                 </ng-container>
 
                 <!-- Game 1 Column -->
                 <ng-container matColumnDef="game1">
                     <th mat-header-cell *matHeaderCellDef> Partida 1 </th>
-                    <td mat-cell *matCellDef="let element"> {{element.game1}} </td>
+                    <td mat-cell *matCellDef="let element">
+                        <input
+                            class="w-14 hover:outline outline-offset-2 outline-1 rounded-sm"
+                            matInput
+                            [(ngModel)]="element.game1"
+                            (focusout)="editCeld('game1', element.game1, element.player_id)"
+                        />
+                    </td>
                 </ng-container>
 
                 <!-- Game 2 Column -->
                 <ng-container matColumnDef="game2">
                     <th mat-header-cell *matHeaderCellDef> Partida 2 </th>
-                    <td mat-cell *matCellDef="let element"> {{element.game2}} </td>
+                    <td mat-cell *matCellDef="let element">
+                        <input
+                            class="w-14 hover:outline outline-offset-2 outline-1 rounded-sm"
+                            matInput
+                            [(ngModel)]="element.game2"
+                            (focusout)="editCeld('game2', element.game2, element.player_id)"
+                        />
+                    </td>
                 </ng-container>
 
                 <!-- Game 3 Column -->
                 <ng-container matColumnDef="game3">
                     <th mat-header-cell *matHeaderCellDef> Partida 3 </th>
-                    <td mat-cell *matCellDef="let element"> {{element.game3}} </td>
+                    <td mat-cell *matCellDef="let element">
+                        <input
+                            class="w-14 hover:outline outline-offset-2 outline-1 rounded-sm"
+                            matInput
+                            [(ngModel)]="element.game3"
+                            (focusout)="editCeld('game3', element.game3, element.player_id)"
+                        />
+                    </td>
                 </ng-container>
 
                 <!-- Game 4 Column -->
                 <ng-container matColumnDef="game4">
                     <th mat-header-cell *matHeaderCellDef> Partida 4 </th>
-                    <td mat-cell *matCellDef="let element"> {{element.game4}} </td>
+                    <td mat-cell *matCellDef="let element">
+                        <input
+                            class="w-14 hover:outline outline-offset-2 outline-1 rounded-sm"
+                            matInput
+                            [(ngModel)]="element.game4"
+                            (focusout)="editCeld('game4', element.game4, element.player_id)"
+                        />
+                    </td>
                 </ng-container>
 
                 <!-- Game 5 Column -->
                 <ng-container matColumnDef="game5">
                     <th mat-header-cell *matHeaderCellDef> Partida 5 </th>
-                    <td mat-cell *matCellDef="let element"> {{element.game5}} </td>
+                    <td mat-cell *matCellDef="let element">
+                        <input
+                            class="w-14 hover:outline outline-offset-2 outline-1 rounded-sm"
+                            matInput
+                            [(ngModel)]="element.game5"
+                            (focusout)="editCeld('game5', element.game5, element.player_id)"
+                        />
+                    </td>
                 </ng-container>
 
                 <!-- Game 6 Column -->
                 <ng-container matColumnDef="game6">
                     <th mat-header-cell *matHeaderCellDef> Partida 6 </th>
-                    <td mat-cell *matCellDef="let element"> {{element.game6}} </td>
+                    <td mat-cell *matCellDef="let element">
+                        <input
+                            class="w-14 hover:outline outline-offset-2 outline-1 rounded-sm"
+                            matInput
+                            [(ngModel)]="element.game6"
+                            (focusout)="editCeld('game6', element.game6, element.player_id)"
+                        />
+                    </td>
                 </ng-container>
 
                 <!-- Media Column -->
@@ -91,10 +141,10 @@
                 <ng-container matColumnDef="options">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-icon-button (click)="edit(element)">
+                        <button [matTooltip]="'Editar a ' + element.name" mat-icon-button (click)="edit(element)">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-icon-button (click)="delete(element.player_id)">
+                        <button [matTooltip]="'Borrar a ' + element.name" mat-icon-button (click)="delete(element.player_id)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </td>
