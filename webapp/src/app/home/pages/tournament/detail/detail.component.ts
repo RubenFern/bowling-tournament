@@ -16,6 +16,8 @@ import { AddGameComponent } from '../../modals/game/add.component';
 import { ConfirmDialog } from '../../modals/alerts/confirm.component';
 import { AlertMessageComponent } from '../../modals/alerts/message.component';
 import { TournamentApiService } from 'app/home/services/tournament.service';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export interface GameElement {
     position: number;
@@ -235,7 +237,7 @@ export class DetailComponent implements OnInit {
     editCeld(field: string, value: string, playerId: string): void {
         const data: any = this.gameElements.find((element) => element.player_id === playerId) || undefined;
 
-        if (!data)
+        if (!data || data[field] === value)
             return;
 
         const updateDto: any = {
@@ -249,6 +251,7 @@ export class DetailComponent implements OnInit {
         this.gameApiService
             .update(updateDto)
             .subscribe(() => {
+                this.loadGames();
                 this.showAlert('Valor editado');
             });
     }
@@ -296,6 +299,24 @@ export class DetailComponent implements OnInit {
         this.location.back();
     }
 
+    generatePDF(): void {
+        const element = document.getElementById('table-container');
+
+        html2canvas(element!).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth() + 30;
+            const pdfHeight = canvas.height * pdfWidth / canvas.width;
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save('tabla.pdf');
+        });
+    }
+
     private showAlert(message: string): void
     {
         this.snackBar.openFromComponent(AlertMessageComponent, {
@@ -303,4 +324,5 @@ export class DetailComponent implements OnInit {
             data: message
         });
     }
+
 }
